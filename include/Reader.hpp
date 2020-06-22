@@ -20,6 +20,7 @@ private:
     char message[64];
     bool validFile = 0;
     time_t start;
+    bool isCSV = false;
     // bool debug = 0;
     // Writer parserWriter;
 public:

@@ -46,6 +46,10 @@ void Message::setType(const char& _type){
     }
 }
 
+void Message::setTypeF(const char& _type){
+    type = _type;
+}
+
 void Message::setId(const id_type& _id){
     id = _id;
 }
@@ -88,6 +92,13 @@ void Message::setOldSize(const size_type& _size){
 
 void Message::setMPID(const char& _mpid){
     strncpy(mpid, &_mpid, 4); mpid[4] = 0;
+}
+
+void Message::setMPID(const std::string& _mpid){
+    if (_mpid.size() > 3) {
+        for (unsigned i=0;i<4;++i) mpid[i] = _mpid[i];
+    }
+    mpid[4] = 0;
 }
 
 // getters

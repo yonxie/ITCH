@@ -42,6 +42,7 @@ public:
      * @param[in] _type type string: according to the definition of NASDAQ
      */
     void setType(const char &);
+    void setTypeF(const char &);
     void setId(const id_type &);
     void setTimeStamp(const time_type &);
     void setSide(const side_type &);
@@ -53,6 +54,7 @@ public:
     void setOldPrice(const price_type &);
     void setOldSize(const size_type &);
     void setMPID(const char &);
+    void setMPID(const std::string &);
 
     char getType(void) const;
     id_type getId(void) const;
