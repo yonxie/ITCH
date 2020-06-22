@@ -2,6 +2,7 @@
 
 Reader::Reader(const std::string &_fileName, const std::string &_stock):
     fileName(_fileName), stock(_stock){
+        if (_fileName.size() > 3 && _fileName.substr(_fileName.size()-4, 4) == ".csv") isCSV = true;
         file.open(fileName);
         if(!file.is_open()){
             std::cerr << "The input file: " << fileName << " cannot be open! " << std::endl;
@@ -11,6 +12,10 @@ Reader::Reader(const std::string &_fileName, const std::string &_stock):
             validFile = 1;
         }
         start = time(0);
+        if (isCSV) {
+            std::string s;
+            std::getline(file, s);
+        }
     }
 
 Reader::Reader(const std::string &_stock): stock(_stock){}
@@ -39,6 +44,59 @@ char Reader::getKey(void){
 Message Reader::createMessage(void){
     printProgress();
     Message msg;
+    if (isCSV) {
+        std::string s = "";
+        std::getline(file, s);
+        std::string s_time = findNextDelim(s, ',');
+        if (s_time != "")
+            msg.setTimeStamp(static_cast<time_type>(getValueByType<uint64_t>(s_time)));
+
+        std::string s_type = findNextDelim(s, ',');
+        if (s_type != "")
+            msg.setTypeF(getValueByType<char>(s_type));
+
+        std::string s_id = findNextDelim(s, ',');
+        if (s_id != "")
+            msg.setId(static_cast<id_type>(getValueByType<uint64_t>(s_id)));
+
+        std::string s_side = findNextDelim(s, ',');
+        if (s_side != "")
+            msg.setSide(static_cast<side_type>(getValueByType<uint32_t>(s_side)));
+
+        std::string s_size = findNextDelim(s, ',');
+        if (s_size != "")
+            msg.setRemSize(static_cast<size_type>(getValueByType<uint32_t>(s_size)));
+
+        std::string s_price = findNextDelim(s, ',');
+        if (s_price != "")
+            msg.setPrice(static_cast<price_type>(getValueByType<double>(s_price)));
+
+        std::string s_cancsize = findNextDelim(s, ',');
+        if (s_cancsize != "")
+            msg.setCancSize(static_cast<size_type>(getValueByType<uint32_t>(s_cancsize)));
+
+        std::string s_execsize = findNextDelim(s, ',');
+        if (s_execsize != "")
+            msg.setExecSize(static_cast<size_type>(getValueByType<uint32_t>(s_execsize)));
+
+        std::string s_oldid = findNextDelim(s, ',');
+        if (s_oldid != "")
+            msg.setOldId(static_cast<id_type>(getValueByType<uint64_t>(s_oldid)));
+
+        std::string s_oldsize = findNextDelim(s, ',');
+        if (s_oldsize != "")
+            msg.setOldSize(static_cast<size_type>(getValueByType<uint32_t>(s_oldsize)));
+
+        std::string s_oldprice = findNextDelim(s, ',');
+        if (s_oldprice != "")
+            msg.setOldPrice(static_cast<price_type>(getValueByType<double>(s_oldprice)));
+
+        std::string s_mpid = findNextDelim(s, ',');
+        if (s_mpid != "")
+            msg.setMPID(s_mpid);
+        //std::cout << s_time << " " << s_id << " " << s_price << std::endl;
+        return msg;
+    }
     skipBytes(2);
     char key = getKey();
     char ticker[9];

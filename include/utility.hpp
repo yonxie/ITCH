@@ -107,4 +107,14 @@ uint64_t parse_ts(char * a);
  */
 std::string getFileName(const std::string& s);
 
+std::string findNextDelim(std::string &, char);
+
+template <class T>
+T getValueByType(std::string s) {
+  std::istringstream buf(s);
+  T val;
+  buf >> val;
+  return val;
+}
+
 #endif /* UTILITY_H_ */

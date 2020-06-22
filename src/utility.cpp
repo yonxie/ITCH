@@ -1,4 +1,5 @@
 #include <utility.hpp>
+#include <sstream>
 
 side_type SIDE_DEFAULT = 0;
 id_type ID_DEFAULT = LLONG_MAX;
@@ -53,4 +54,12 @@ uint64_t parse_uint64(char * a){
 uint64_t parse_ts(char * a){
     return (((static_cast<uint64_t>(bswap_16(*(reinterpret_cast<uint16_t *>(a))))) << 32) |
     static_cast<uint64_t>(bswap_32(*(reinterpret_cast<uint32_t *>(a+2)))));
+}
+
+std::string findNextDelim(std::string &s, char delim) {
+  std::size_t posi = s.find(delim);
+  if (posi == std::string::npos) return s;
+  std::string res = s.substr(0,posi);
+  s.erase(0, posi+1);
+  return res;
 }
