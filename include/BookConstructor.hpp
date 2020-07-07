@@ -7,7 +7,7 @@
 #include <OrderBook.hpp>
 #include <Reader.hpp>
 #include <Writer.hpp>
-
+#include <string>
 
 class BookConstructor{
 private:
@@ -19,6 +19,7 @@ private:
     Writer bookWriter;
     Writer parserWriter;
     size_t levels;
+    bool SaveMessage = true;
 public:
     BookConstructor(const std::string &inputMessageCSV,
                     const std::string &outputMessageCSV,

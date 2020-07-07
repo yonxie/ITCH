@@ -1,5 +1,5 @@
 #include <BookConstructor.hpp>
-
+#include <Writer.hpp>
 /**
  * Class Initializer.
  *
@@ -17,10 +17,16 @@ BookConstructor::BookConstructor(const std::string &inputMessageCSV,
     const std::string &_stock,
     const size_t &_levels):
     message_reader(inputMessageCSV, _stock),
-    messageWriter(outputMessageCSV),
     bookWriter(outputBookCSV),
+//    outputMessageCSV(_outputMessageCSV),
     levels(_levels){
-        messageWriter.writeLine("time,type,id,side,size,price,cancSize,execSize,oldId,oldSize,oldPrice,mpid\n");
+        if (outputMessageCSV.substr(0, 1) == "0") SaveMessage = false;
+        if (SaveMessage){
+            messageWriter = Writer::Writer(outputMessageCSV);  # TODO: How to initialize this one
+        }
+        if (SaveMessage){
+            messageWriter.writeLine("time,type,id,side,size,price,cancSize,execSize,oldId,oldSize,oldPrice,mpid\n");
+        }
         std::string bookHeader = "time,";
         for(size_t i = 1; i<=levels; i++){
             std::string num = std::to_string(i);
@@ -231,5 +237,7 @@ void BookConstructor::updatePool(void){
  */
 void BookConstructor::WriteBookAndMessage(void){
     bookWriter.writeLine(book.getString(levels));
-    messageWriter.writeLine(message.getString());
+    if (SaveMessage) {
+        messageWriter.writeLine(message.getString());
+    }
 }
