@@ -27,7 +27,7 @@
 
 int main(int argc, char * argv[]){
 
-    if(argc<5){
+    if(argc<6){
         std::cerr << "The program should be called with: ./BookConstructor path_input_file dir_book dir_messages levels stock" << std::endl;
         return 1;
     }
@@ -37,9 +37,11 @@ int main(int argc, char * argv[]){
     std::string outMessageDirectory = argv[3];
     size_t levels = std::stoul(argv[4]);
     std::string stock = argv[5];
-    std::string nameFile = getFileName(pathFile);
-    std::string outBookFileName = outBookDirectory+nameFile+"_"+stock+"_book_"+std::to_string(levels)+".csv";
-    std::string outMessageFileName = outMessageDirectory+nameFile+"_"+stock+"_message.csv";
+    std::string market = argv[6];
+    std::string date = argv[7];
+//    std::string nameFile = getFileName(pathFile);
+    std::string outBookFileName = outBookDirectory+date+"_"+stock+"_"+market+"_book_"+std::to_string(levels)+".csv";
+    std::string outMessageFileName = outMessageDirectory+date+"_"+stock+"_"+market+"_message.csv";
     std::string stockPadded = stock;
     stockPadded.insert(stockPadded.end(), 8 - stockPadded.size(), ' ');
 
