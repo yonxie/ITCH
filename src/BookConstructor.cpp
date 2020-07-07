@@ -1,5 +1,5 @@
 #include <BookConstructor.hpp>
-#include <Writer.hpp>
+
 /**
  * Class Initializer.
  *
@@ -10,6 +10,7 @@
  * @param[in] _stock selected stock.
  * @param[in] _levels selected number of levels for order book.
  * @param[out] outputBookCSV, outputMessageCSV destination files to write order book and stream message.
+ *             if the either of the destination starts with not_save, then won't save the file.
  */
 BookConstructor::BookConstructor(const std::string &inputMessageCSV,
     const std::string &outputMessageCSV,
@@ -17,14 +18,10 @@ BookConstructor::BookConstructor(const std::string &inputMessageCSV,
     const std::string &_stock,
     const size_t &_levels):
     message_reader(inputMessageCSV, _stock),
+    messageWriter(outputMessageCSV),
     bookWriter(outputBookCSV),
-//    outputMessageCSV(_outputMessageCSV),
     levels(_levels){
-        if (outputMessageCSV.substr(0, 1) == "0") SaveMessage = false;
-        if (SaveMessage){
-            messageWriter = Writer::Writer(outputMessageCSV);  # TODO: How to initialize this one
-        }
-        if (SaveMessage){
+        if (messageWriter.SaveMessage){
             messageWriter.writeLine("time,type,id,side,size,price,cancSize,execSize,oldId,oldSize,oldPrice,mpid\n");
         }
         std::string bookHeader = "time,";
@@ -237,7 +234,7 @@ void BookConstructor::updatePool(void){
  */
 void BookConstructor::WriteBookAndMessage(void){
     bookWriter.writeLine(book.getString(levels));
-    if (SaveMessage) {
+    if (messageWriter.SaveMessage) {
         messageWriter.writeLine(message.getString());
     }
 }

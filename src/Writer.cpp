@@ -1,13 +1,18 @@
 #include <Writer.hpp>
 
-Writer::Writer(const std::string& _fileName):fileName(_fileName){
-  file.open(_fileName);
-  if(!file.is_open()){
-      std::cerr << "The output file: " << fileName << " cannot be open! " << std::endl;
-      }
-  else {
-      std::cout << "Opened " << fileName << " for writing." << std::endl;
-  }
+Writer::Writer(const std::string& _fileName):fileName(_fileName) {
+    if (fileName.substr(0, 8) == "not_save") {
+        SaveMessage = false;
+    }
+    else{
+        file.open(_fileName);
+        if (!file.is_open()){
+            std::cerr << "The output file: " << fileName << " cannot be open! " << std::endl;
+        }
+        else {
+            std::cout << "Opened " << fileName << " for writing." << std::endl;
+        }
+    }
 }
 
 void Writer::writeLine(const std::string &stringToWrite){

@@ -32,13 +32,13 @@ int main(int argc, char * argv[]){
         return 1;
     }
 
-    std::string pathFile = argv[1];
-    std::string outBookDirectory = argv[2];
-    std::string outMessageDirectory = argv[3];
-    size_t levels = std::stoul(argv[4]);
-    std::string stock = argv[5];
-    std::string market = argv[6];
-    std::string date = argv[7];
+    std::string pathFile = argv[1];                   // input file
+    std::string outBookDirectory = argv[2];           // book output folder
+    std::string outMessageDirectory = argv[3];        // message output folder
+    size_t levels = std::stoul(argv[4]);              // level
+    std::string stock = argv[5];                      // stock ticker
+    std::string market = argv[6];                     // market abbreviation
+    std::string date = argv[7];                       // date string
 //    std::string nameFile = getFileName(pathFile);
     std::string outBookFileName = outBookDirectory+date+"_"+stock+"_"+market+"_book_"+std::to_string(levels)+".csv";
     std::string outMessageFileName = outMessageDirectory+date+"_"+stock+"_"+market+"_message.csv";

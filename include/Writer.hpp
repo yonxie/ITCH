@@ -19,6 +19,7 @@ class Writer{
      *
      * @param[in] _fileName destination csv files to update.
      */
+    bool SaveMessage = true;
     Writer(const std::string& fileName);
     Writer() = default;
     ~Writer();
