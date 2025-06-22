@@ -22,7 +22,11 @@ ITCH
 │   │
 │   └───book        (output of book csv)
 │   │
-│   └───messages    (output of messages csv)
+│   └───message     (output of message csv)
+│   │   │
+│   │   └───raw     (input CSV message files)
+│   │
+│   └───messages    (output of messages csv from binary files)
 │   │
 │   └───pk          (pickle object files)
 │
@@ -96,7 +100,9 @@ wget ftp://anonymous:@emi.nasdaq.com/ITCH/PSX_ITCH/20190327.PSX_ITCH_50.gz -P ./
 
 ## Usage example
 
-To reconstruct the book we can use the bash wrapper BookConstructor.sh which has the following usage:
+### Using Binary ITCH Files
+
+To reconstruct the book from binary ITCH files, we can use the bash wrapper BookConstructor.sh which has the following usage:
 
 ```
 usage:    ./BookConstructor.sh [-lfh] [-n #] data_folder mm/dd/yyyy venue ticker
@@ -130,6 +136,50 @@ this will create two output .csv files, namely:
 ``` sh
 /../../ITCH/data/book/03272019.PSX_ITCH50_AAPL_book_5.csv
 /../../ITCH/data/messages/03272019.PSX_ITCH50_AAPL_message.csv
+```
+
+### Using CSV Message Files
+
+The program has been updated to also support CSV message files as input. To reconstruct the book from CSV message files, we can use the bash wrapper CSVBookConstructor.sh which has the following usage:
+
+```
+usage:    ./CSVBookConstructor.sh [-fh] [-n #] input_file_path output_folder stock venue date
+          ./CSVBookConstructor.sh [-h]
+
+ -h, --help     Display usage instructions
+ -f, --force    To force program execution if output files already exists
+ -n,            Number of levels to store for the book, default is 5
+```
+
+for example `./CSVBookConstructor.sh input_file_path output_folder stock venue date -n N`
+will produce two output files named:
+
+```
+output_folder/date_stock_venue_book_N.csv
+output_folder/date_stock_venue_message.csv
+```
+
+###### example
+
+Given that you have a CSV message file at `/../../ITCH/data/message/raw/10302019_MSFT_NASDAQ_message.csv`
+
+``` sh
+cd /../../ITCH
+./CSVBookConstructor.sh ./data/message/raw/10302019_MSFT_NASDAQ_message.csv ./output/ MSFT NASDAQ 10302019 -n 10
+```
+
+this will create two output .csv files, namely:
+``` sh
+/../../ITCH/output/10302019_MSFT_NASDAQ_book_10.csv
+/../../ITCH/output/10302019_MSFT_NASDAQ_message.csv
+```
+
+The CSV input file should have the following format:
+```
+time,type,id,side,size,price,cancSize,execSize,oldId,oldSize,oldPrice,mpid
+14400013146442,A,2815,0,40,136.45,,,,,,
+14400042954880,A,16195,0,5000,1.01,,,,,,
+...
 ```
 
 # Detailed output description
@@ -226,4 +276,3 @@ The implemented strategy can be found at
 * Luigi Fusco           <https://github.com/luigif9>
 * Ozrenka Dragić        <https://github.com/oz-dr>
 * Martino Bernasconi    <https://github.com/martinobdl>
-
